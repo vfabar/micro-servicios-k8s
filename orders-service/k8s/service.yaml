@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders-service
+  labels:
+    app: orders-service
+spec:
+  # ClusterIP por defecto. orders-service es el "punto de entrada" del flujo;
+  # para exponerlo al exterior en EKS se usaría un Ingress (ALB) o un
+  # Service type: LoadBalancer. Para el laboratorio inicial se accede con:
+  #   kubectl port-forward svc/orders-service 8003:8003
+  type: ClusterIP
+  selector:
+    app: orders-service
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8003
+      targetPort: 8003

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: inventory-service
+  labels:
+    app: inventory-service
+spec:
+  # ClusterIP: alcanzable internamente como http://inventory-service:8002
+  type: ClusterIP
+  selector:
+    app: inventory-service
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8002
+      targetPort: 8002

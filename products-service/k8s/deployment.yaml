@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: products-service
+  labels:
+    app: products-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: products-service
+  template:
+    metadata:
+      labels:
+        app: products-service
+    spec:
+      containers:
+        - name: products-service
+          # IMPORTANTE: reemplazar <ACCOUNT_ID> y <REGION> por los de tu cuenta AWS
+          # tras hacer push a Amazon ECR. Ejemplo:
+          #   123456789012.dkr.ecr.us-east-1.amazonaws.com/products-service:latest
+          image: <ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/products-service:latest
+          ports:
+            - containerPort: 8001
+          # Probe de "vivo": si falla, Kubernetes reinicia el contenedor.
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8001
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          # Probe de "listo": si falla, no recibe tráfico desde el Service.
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8001
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "250m"
+              memory: "128Mi"

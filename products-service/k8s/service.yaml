@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: products-service
+  labels:
+    app: products-service
+spec:
+  # ClusterIP = solo accesible DENTRO del clúster.
+  # Otros servicios lo alcanzan vía DNS interno: http://products-service:8001
+  type: ClusterIP
+  selector:
+    app: products-service
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8001        # puerto del Service (DNS interno)
+      targetPort: 8001  # puerto del contenedor
