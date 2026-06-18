@@ -32,14 +32,14 @@ spec:
               value: "http://inventory-service:8002"
           livenessProbe:
             httpGet:
-              path: /health
-              port: 8003
+              path: /live           # antes /health
+              port: 8001            # (8001 products, 8002 inventory, 8003 orders)
             initialDelaySeconds: 5
             periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /health
-              port: 8003
+              path: /ready          # antes /health
+              port: 8001
             initialDelaySeconds: 3
             periodSeconds: 5
           resources:
