@@ -54,7 +54,7 @@ jobs:
         run: |
           ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
           for svc in products-service inventory-service orders-service; do
-            sed -i "s|766841977331|$ACCOUNT_ID|g; s|us-east-1|$AWS_REGION|g; s|:latest|:$IMAGE_TAG|g" "$svc/k8s/deployment.yaml"
+            sed -i "s|<ACCOUNT_ID>|$ACCOUNT_ID|g; s|<REGION>|$AWS_REGION|g; s|:latest|:$IMAGE_TAG|g" "$svc/k8s/deployment.yaml"
             kubectl apply -f "$svc/k8s/deployment.yaml"
             kubectl apply -f "$svc/k8s/service.yaml"
           done
